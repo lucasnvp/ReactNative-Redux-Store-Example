@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { ScrollView, Text, TextInput, View, Button } from 'react-native';
+import { login } from './LoginActions';
 
 class Login extends Component {
     constructor (props) {
@@ -37,10 +39,23 @@ class Login extends Component {
                     value={this.state.password}
                     onChangeText={(text) => this.setState({ password: text })} />
                 <View style={{margin: 7}}/>
-                {/*<Button onPress={(e) => this.userLogin(e)} title="Login"/>*/}
+                <Button onPress={(e) => this.userLogin(e)} title="Login"/>
             </ScrollView>
         );
     }
 }
 
-export default (Login);
+
+const mapStateToProps = (state) => {
+    return {
+        isLoggedIn: state.auth.isLoggedIn
+    };
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onLogin: (username, password) => { dispatch(login(username, password)); }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
